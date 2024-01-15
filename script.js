@@ -84,3 +84,8 @@ clearBtn.addEventListener("click", clearItems);
 itemFilter.addEventListener("input", filterItems);
 
 checkUI();
+
+localStorage.setItem('name','Shantanu')
+console.log(localStorage.getItem('name'))
+localStorage.removeItem('name')
+localStorage.clear()
