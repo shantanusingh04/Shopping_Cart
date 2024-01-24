@@ -4,6 +4,12 @@ const itemList = document.getElementById("item-list");
 const clearBtn = document.getElementById("clear");
 const itemFilter = document.getElementById("filter");
 
+function displayItems(){
+  const itemsFromStorage=getItemsFromStorage();
+  itemsFromStorage.forEach((item)=>addItemToDOM(item))
+  checkUI()
+}
+
 function onAddItemSubmit(e) {
   e.preventDefault();
 
@@ -26,17 +32,6 @@ function addItemToDOM(item){
   itemList.appendChild(li);
 }
 
-function addItemToStorage(item){
-  let itemsFromStorage;
-  if(localStorage.getItem('items')===null){
-    itemsFromStorage=[];
-  }
-  else{
-    itemsFromStorage=JSON.parse(localStorage.getItem('items'))
-  }
-  itemsFromStorage.push(item);
-  localStorage.setItem('items',JSON.stringify(itemsFromStorage))
-}
 
 function createButton(classes) {
   const button = document.createElement("button");
@@ -50,6 +45,23 @@ function createIcon(iclasses) {
   const icon = document.createElement("i");
   icon.className = iclasses;
   return icon;
+}
+
+function addItemToStorage(item){
+  const itemsFromStorage=getItemsFromStorage();
+  itemsFromStorage.push(item);
+  localStorage.setItem('items',JSON.stringify(itemsFromStorage))
+}
+
+function getItemsFromStorage(){
+  let itemsFromStorage;
+  if(localStorage.getItem('items')===null){
+    itemsFromStorage=[];
+  }
+  else{
+    itemsFromStorage=JSON.parse(localStorage.getItem('items'))
+  }
+  return itemsFromStorage
 }
 
 function removeItem(e) {
@@ -95,14 +107,18 @@ function checkUI() {
   }
 }
 
+function init(){
 itemForm.addEventListener("submit", onAddItemSubmit);
 itemList.addEventListener("click", removeItem);
 clearBtn.addEventListener("click", clearItems);
 itemFilter.addEventListener("input", filterItems);
+document.addEventListener('DOMContentLoaded',displayItems)
 
 checkUI();
+}
 
-localStorage.setItem('name','Shantanu')
-console.log(localStorage.getItem('name'))
-localStorage.removeItem('name')
-localStorage.clear()
+// localStorage.setItem('name','Shantanu')
+// console.log(localStorage.getItem('name'))
+// localStorage.removeItem('name')
+// localStorage.clear()
+init();
